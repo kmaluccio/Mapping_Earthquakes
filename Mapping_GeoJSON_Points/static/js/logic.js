@@ -11,11 +11,15 @@ let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/t
 streets.addTo(map);
 
 // Accessing the airport GeoJSON URL
-let airportData = "https://raw.githubusercontent.com/kmaluccio/Mapping_Earthquakes/main/majorAirports.json";
+let airportData = "https://github.com/kmaluccio/Mapping_Earthquakes/blob/main/majorAirports.json";
 
 // Grab geojson data and add to our map
 d3.json(airportData).then(function(data) {
     console.log(data);
     // Creating a GeoJSON layer with the retrieved data
-    L.geoJSON(data).addTo(map);
+    L.geoJSON(data, {
+        onEachFeature: function(feature, layer) {
+            layer.bindPopup("<h2>" + "Airport code: " + feature.properties.faa + "</h2>" + "__________________________________________" + "<h3>" + "Airport name: " + feature.properties.name + "</h3>");
+        }
+    }).addTo(map);
 });
